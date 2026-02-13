@@ -28,7 +28,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}
+          images: ghcr.io/frozze/nginx-config-generator
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -55,13 +55,13 @@ jobs:
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             docker stop nginx-config-generator || true
             docker rm nginx-config-generator || true
-            docker pull ghcr.io/${{ github.repository }}:main
+            docker pull ghcr.io/frozze/nginx-config-generator:main
             docker run -d \
               --name nginx-config-generator \
               -p 3000:3000 \
               -v ${{ secrets.TARGET_DIR }}:/app/data \
               -v ${{ secrets.TARGET_DIR }}/.env:/app/.env.production.local \
               --restart unless-stopped \
-              ghcr.io/${{ github.repository }}:main
+              ghcr.io/frozze/nginx-config-generator:main
 
 
