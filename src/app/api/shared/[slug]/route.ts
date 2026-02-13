@@ -4,7 +4,7 @@ import { savedConfigs } from '@/lib/db/schema';
 import { eq, and } from 'drizzle-orm';
 
 export async function GET(
-    request: Request,
+    _request: Request,
     { params }: { params: Promise<{ slug: string }> }
 ) {
     const { slug } = await params;
@@ -20,7 +20,7 @@ export async function GET(
         }
 
         return NextResponse.json(config);
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

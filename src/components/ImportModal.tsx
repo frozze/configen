@@ -86,7 +86,7 @@ export default function ImportModal({ isOpen, onClose }: ImportModalProps) {
                     <div className="mb-4">
                         <p className="text-sm text-zinc-500 dark:text-zinc-400 mb-4">
                             Paste your existing <code>nginx.conf</code> content below or upload a file.
-                            We'll do our best to map it to the generator settings.
+                            We&apos;ll do our best to map it to the generator settings.
                         </p>
 
                         <div className="relative">

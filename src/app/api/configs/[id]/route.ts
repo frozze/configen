@@ -29,7 +29,7 @@ export async function GET(
         }
 
         return NextResponse.json(config);
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
@@ -69,7 +69,7 @@ export async function PUT(
             .where(eq(savedConfigs.id, id));
 
         return NextResponse.json({ success: true });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
@@ -88,7 +88,7 @@ export async function DELETE(
     }
 
     try {
-        const result = await db
+        await db
             .delete(savedConfigs)
             .where(and(eq(savedConfigs.id, id), eq(savedConfigs.userId, session.user.id)));
 
@@ -96,7 +96,7 @@ export async function DELETE(
         // Usually assuming it succeeded if no error.
 
         return NextResponse.json({ success: true });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }

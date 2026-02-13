@@ -6,7 +6,7 @@ import { headers } from 'next/headers';
 import { eq, desc } from 'drizzle-orm';
 import { createDefaultConfig } from '@/stores/configStore'; // For validation or defaults
 
-export async function GET(request: Request) {
+export async function GET(_request: Request) {
     const session = await auth.api.getSession({
         headers: await headers()
     });

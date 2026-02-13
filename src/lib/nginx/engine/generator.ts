@@ -6,7 +6,6 @@ import type {
     NginxFullConfig,
     LocationConfig,
     GenerationResult,
-    ProxyConfig,
 } from './types';
 import { validateConfig } from './validator';
 import { sslPresets, getCiphersForPreset } from './ssl-ciphers';

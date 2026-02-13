@@ -8,6 +8,7 @@ export default function ThemeToggle() {
     useEffect(() => {
         const saved = localStorage.getItem('theme');
         if (saved === 'light') {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setDark(false);
             document.documentElement.classList.add('light');
         }

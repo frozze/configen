@@ -14,13 +14,13 @@ export default function RegisterPage() {
     const router = useRouter();
 
     const handleRegister = async () => {
-        const { data, error } = await authClient.signUp.email({
+        const { error } = await authClient.signUp.email({
             email,
             password,
             name
         });
         if (error) {
-            setError(error.message);
+            setError(error.message ?? 'An unknown error occurred');
         } else {
             router.push('/dashboard');
         }

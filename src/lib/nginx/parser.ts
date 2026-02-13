@@ -249,6 +249,7 @@ export function astToConfig(ast: NginxAST): ImportResult {
                     });
                     config.upstream!.servers.push(server);
                 } else if (['least_conn', 'ip_hash', 'random'].includes(node.name)) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     config.upstream!.method = node.name as any;
                 }
             });
@@ -349,6 +350,7 @@ function mapServerDirective(
             break;
         case 'error_log':
             config.logging.errorLogPath = args[0];
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if (args[1]) config.logging.errorLogLevel = args[1] as any;
             break;
 

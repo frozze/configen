@@ -107,7 +107,7 @@ function highlightLine(line: string): React.ReactNode {
 
     // Process tokens
     const parts: React.ReactNode[] = [];
-    let remaining = line;
+    const remaining = line;
     let key = 0;
 
     // Regex for strings, numbers, keywords

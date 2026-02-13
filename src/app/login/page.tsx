@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { authClient } from '@/lib/auth-client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Server, Github, Chrome } from 'lucide-react';
+import { Server, Github } from 'lucide-react';
 
 export default function LoginPage() {
     const [email, setEmail] = useState('');
@@ -18,7 +18,7 @@ export default function LoginPage() {
             password
         });
         if (error) {
-            setError(error.message);
+            setError(error.message ?? 'An unknown error occurred');
         } else {
             router.push('/dashboard');
         }
@@ -100,7 +100,7 @@ export default function LoginPage() {
                 </div>
 
                 <p className="mt-6 text-center text-sm text-dark-400">
-                    Don't have an account?{' '}
+                    Don&apos;t have an account?{' '}
                     <Link href="/register" className="text-accent-400 hover:text-accent-300">
                         Sign up
                     </Link>

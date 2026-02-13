@@ -1,6 +1,7 @@
 'use client';
 import { ArrowDown, Zap, Shield, Globe, Code } from 'lucide-react';
 import ConfigForm from '@/components/generator/ConfigForm';
+import Link from 'next/link';
 import ConfigPreview from '@/components/generator/ConfigPreview';
 import AdSlot from '@/components/ui/AdSlot';
 import { useState } from 'react';
@@ -92,12 +93,12 @@ export default function HomePage() {
                 Start Building
                 <ArrowDown className="w-4 h-4" />
               </a>
-              <a
+              <Link
                 href="/docs/reverse-proxy"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-dark-600 text-dark-300 font-semibold text-sm hover:bg-dark-800 transition-colors"
               >
                 Read Docs
-              </a>
+              </Link>
             </div>
           </div>
 
