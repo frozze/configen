@@ -5,7 +5,7 @@ Thanks for your interest in contributing! Here's how to get started.
 ## Development Setup
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/Nginx-Config-Generator-.git`
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/Nginx-Config-Generator.git`
 3. Install dependencies: `npm install`
 4. Start dev server: `npm run dev`
 5. Make your changes

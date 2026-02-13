@@ -9,7 +9,7 @@ import ImportModal from '../ImportModal';
 const navLinks = [
     { href: '/#generator', label: 'Generator' },
     { href: '/docs/reverse-proxy', label: 'Docs' },
-    { href: 'https://github.com/frozze/Nginx-Config-Generator-', label: 'GitHub', external: true },
+    { href: 'https://github.com/frozze/Nginx-Config-Generator', label: 'GitHub', external: true },
 ];
 
 export default function Header() {

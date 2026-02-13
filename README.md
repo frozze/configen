@@ -12,9 +12,9 @@
   </p>
 
   <p>
-    <a href="https://github.com/frozze/Nginx-Config-Generator-/stargazers"><img src="https://img.shields.io/github/stars/frozze/Nginx-Config-Generator-?style=social" /></a>
+    <a href="https://github.com/frozze/Nginx-Config-Generator/stargazers"><img src="https://img.shields.io/github/stars/frozze/Nginx-Config-Generator?style=social" /></a>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue" /></a>
-    <a href="https://github.com/frozze/Nginx-Config-Generator-/actions"><img src="https://img.shields.io/github/actions/workflow/status/frozze/Nginx-Config-Generator-/ci.yml" /></a>
+    <a href="https://github.com/frozze/Nginx-Config-Generator/actions"><img src="https://img.shields.io/github/actions/workflow/status/frozze/Nginx-Config-Generator/ci.yml" /></a>
   </p>
 </div>
 
@@ -39,8 +39,8 @@ NginxConfig is a free, open-source tool that helps you build production-ready Ng
 
 ```bash
 # Clone the repo
-git clone https://github.com/frozze/Nginx-Config-Generator-.git
-cd Nginx-Config-Generator-
+git clone https://github.com/frozze/Nginx-Config-Generator.git
+cd Nginx-Config-Generator
 
 # Install dependencies
 npm install
@@ -55,8 +55,8 @@ npm run dev
 
 ```bash
 # Clone and build
-git clone https://github.com/frozze/Nginx-Config-Generator-.git
-cd Nginx-Config-Generator-
+git clone https://github.com/frozze/Nginx-Config-Generator.git
+cd Nginx-Config-Generator
 
 # Run with Docker Compose
 docker compose up -d
