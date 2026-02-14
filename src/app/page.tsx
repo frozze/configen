@@ -2,6 +2,7 @@
 import { ArrowDown, Zap, Shield, Globe, Code } from 'lucide-react';
 import ConfigForm from '@/components/generator/ConfigForm';
 import ConfigPreview from '@/components/generator/ConfigPreview';
+import DeploySection from '@/components/generator/DeploySection';
 import AdSlot from '@/components/ui/AdSlot';
 import { useState } from 'react';
 import { useUIStore } from '@/stores/uiStore';
@@ -166,6 +167,11 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ─── Deploy ──────────────────────────────────────── */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <DeploySection />
+      </div>
 
       <AdSlot position="inline" />
 

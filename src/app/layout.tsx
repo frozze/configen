@@ -60,13 +60,13 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
-              name: "Nginx Config Generator",
-              url: "https://nginxconfig.io",
+              name: "Configen",
+              url: "https://configen.dev",
               applicationCategory: "DeveloperApplication",
               operatingSystem: "Web",
               offers: { "@type": "Offer", price: "0" },
               description:
-                "Generate production-ready Nginx configurations visually. Free, open-source, no signup required.",
+                "Free, open-source visual config generator & linter for Nginx. Generate, import, lint, and edit production-ready configs in your browser.",
             }),
           }}
         />

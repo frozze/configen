@@ -8,6 +8,7 @@ import { useUIStore } from '@/stores/uiStore';
 
 const navLinks = [
     { href: '/#generator', label: 'Generator' },
+    { href: '/lint', label: 'Linter' },
     { href: '/docs/reverse-proxy', label: 'Docs' },
     { href: 'https://github.com/frozze/configen', label: 'GitHub', external: true },
 ];

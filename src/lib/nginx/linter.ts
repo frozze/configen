@@ -132,6 +132,131 @@ export const rules: LintRule[] = [
         fix: () => ({ performance: { keepaliveTimeout: 65 } } as DeepPartial<NginxConfig>),
         docsUrl: '/docs/lint/bp-keepalive-timeout-high',
     },
+
+    // ─── Security (additional) ────────────────────────────────────────────────
+    {
+        id: 'security-ssl-protocols-outdated',
+        title: 'Outdated SSL/TLS Protocols',
+        message: 'SSL is enabled but outdated protocols (TLSv1 or TLSv1.1) may be in use. Only TLSv1.2 and TLSv1.3 are considered secure.',
+        category: 'security',
+        severity: 'error',
+        test: (c) => c.ssl.enabled && c.ssl.protocols.some(p => p === 'TLSv1' || p === 'TLSv1.1'),
+        fix: (c) => ({ ssl: { protocols: c.ssl.protocols.filter(p => p !== 'TLSv1' && p !== 'TLSv1.1') } } as DeepPartial<NginxConfig>),
+        docsUrl: '/docs/lint/security-ssl-protocols-outdated',
+    },
+    {
+        id: 'security-no-rate-limiting',
+        title: 'Rate Limiting Disabled',
+        message: 'Rate limiting is not enabled. Without it, your server is more vulnerable to brute-force and DDoS attacks.',
+        category: 'security',
+        severity: 'info',
+        test: (c) => !c.security.rateLimiting,
+        fix: () => ({ security: { rateLimiting: true, rateLimit: 10, rateBurst: 20 } } as DeepPartial<NginxConfig>),
+        docsUrl: '/docs/lint/security-no-rate-limiting',
+    },
+    {
+        id: 'security-basic-auth-no-ssl',
+        title: 'Basic Auth Without SSL',
+        message: 'Basic authentication is enabled without SSL/TLS. Credentials are sent in plain text over HTTP.',
+        category: 'security',
+        severity: 'error',
+        test: (c) => c.security.basicAuth && !c.ssl.enabled,
+        docsUrl: '/docs/lint/security-basic-auth-no-ssl',
+    },
+    {
+        id: 'security-open-autoindex',
+        title: 'Directory Listing Enabled',
+        message: 'autoindex is enabled on one or more locations. This exposes your directory structure to visitors.',
+        category: 'security',
+        severity: 'warning',
+        test: (c) => c.locations.some(loc => loc.autoindex),
+        docsUrl: '/docs/lint/security-open-autoindex',
+    },
+
+    // ─── Performance (additional) ─────────────────────────────────────────────
+    {
+        id: 'perf-brotli-disabled',
+        title: 'Brotli Compression Disabled',
+        message: 'Brotli compression is not enabled. Brotli offers 15-25% better compression than gzip for text content.',
+        category: 'performance',
+        severity: 'info',
+        test: (c) => c.ssl.enabled && !c.performance.brotli,
+        fix: () => ({ performance: { brotli: true } } as DeepPartial<NginxConfig>),
+        docsUrl: '/docs/lint/perf-brotli-disabled',
+    },
+    {
+        id: 'perf-no-static-caching',
+        title: 'Static File Caching Disabled',
+        message: 'Static file caching is not configured. Adding cache headers for assets (.js, .css, images) significantly improves page load times.',
+        category: 'performance',
+        severity: 'warning',
+        test: (c) => !c.performance.staticCaching,
+        fix: () => ({ performance: { staticCaching: true, cacheExpiry: '30d' } } as DeepPartial<NginxConfig>),
+        docsUrl: '/docs/lint/perf-no-static-caching',
+    },
+    {
+        id: 'perf-large-client-body',
+        title: 'Large Client Body Size Limit',
+        message: 'client_max_body_size is set above 100 MB. This may allow excessively large file uploads and consume server resources.',
+        category: 'performance',
+        severity: 'warning',
+        test: (c) => {
+            const sizeInMB = c.performance.clientMaxBodyUnit === 'GB'
+                ? c.performance.clientMaxBodySize * 1024
+                : c.performance.clientMaxBodySize;
+            return sizeInMB > 100;
+        },
+        docsUrl: '/docs/lint/perf-large-client-body',
+    },
+    {
+        id: 'perf-low-keepalive',
+        title: 'Keepalive Timeout Too Low',
+        message: 'Keepalive timeout is set very low (< 10s). This forces frequent TCP reconnections, adding latency.',
+        category: 'performance',
+        severity: 'info',
+        test: (c) => c.performance.keepaliveTimeout > 0 && c.performance.keepaliveTimeout < 10,
+        fix: () => ({ performance: { keepaliveTimeout: 65 } } as DeepPartial<NginxConfig>),
+        docsUrl: '/docs/lint/perf-low-keepalive',
+    },
+
+    // ─── Correctness / Best Practice (additional) ─────────────────────────────
+    {
+        id: 'bp-missing-root-or-proxy',
+        title: 'No Root Path or Reverse Proxy',
+        message: 'No locations defined and reverse proxy is disabled. Nginx won\'t know where to find files or where to forward requests.',
+        category: 'best-practice',
+        severity: 'warning',
+        test: (c) => c.locations.length === 0 && !c.reverseProxy.enabled,
+        docsUrl: '/docs/lint/bp-missing-root-or-proxy',
+    },
+    {
+        id: 'bp-http-redirect-without-ssl',
+        title: 'HTTP Redirect Without SSL',
+        message: 'HTTP-to-HTTPS redirect is configured but SSL is not enabled. The redirect will fail or cause a loop.',
+        category: 'best-practice',
+        severity: 'error',
+        test: (c) => c.ssl.httpRedirect && !c.ssl.enabled,
+        docsUrl: '/docs/lint/bp-http-redirect-without-ssl',
+    },
+    {
+        id: 'bp-single-server-upstream',
+        title: 'Single Server in Upstream',
+        message: 'Upstream block has only one server. Consider using proxy_pass directly for simplicity, or add more servers for redundancy.',
+        category: 'best-practice',
+        severity: 'info',
+        test: (c) => c.upstream.enabled && c.upstream.servers.length === 1,
+        docsUrl: '/docs/lint/bp-single-server-upstream',
+    },
+    {
+        id: 'bp-logging-disabled',
+        title: 'Access Logging Disabled',
+        message: 'Access logging is disabled. Logs are essential for debugging, monitoring, and security auditing.',
+        category: 'best-practice',
+        severity: 'warning',
+        test: (c) => !c.logging.accessLog,
+        fix: () => ({ logging: { accessLog: true, accessLogPath: '/var/log/nginx/access.log' } } as DeepPartial<NginxConfig>),
+        docsUrl: '/docs/lint/bp-logging-disabled',
+    },
 ];
 
 export function lintConfig(config: NginxConfig): LintReport {

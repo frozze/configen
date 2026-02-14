@@ -11,6 +11,8 @@
 
   <p>
     <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0-blue" /></a>
+    <a href="https://configen.dev"><img src="https://img.shields.io/badge/website-configen.dev-teal" /></a>
+    <a href="https://github.com/frozze/Nginx-Config-Generator/stargazers"><img src="https://img.shields.io/github/stars/frozze/Nginx-Config-Generator" /></a>
   </p>
 </div>
 
