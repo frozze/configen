@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
             userAgent: '*',
             allow: '/',
         },
-        sitemap: 'https://nginxconfig.io/sitemap.xml',
+        sitemap: 'https://configen.dev/sitemap.xml',
     };
 }

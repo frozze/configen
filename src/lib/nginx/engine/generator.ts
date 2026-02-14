@@ -1,4 +1,4 @@
-// ─── Nginx Config Generator — Core Engine ────────────────────────────────────
+// ─── Configen — Core Engine ──────────────────────────────────────────────────
 // Produces production-ready nginx configuration strings.
 // Browser-compatible — no Node.js APIs.
 

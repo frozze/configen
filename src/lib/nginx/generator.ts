@@ -1,4 +1,4 @@
-// ─── Nginx Config Generator — Pure Function ────────────────────────────────
+// ─── Configen — Pure Function ───────────────────────────────────────────────
 import type { NginxConfig, LocationConfig } from './types';
 
 /**

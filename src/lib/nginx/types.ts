@@ -1,4 +1,4 @@
-// ─── Nginx Config Generator — Type Definitions ─────────────────────────────
+// ─── Configen — Type Definitions ────────────────────────────────────────────
 
 export interface SSLConfig {
     enabled: boolean;

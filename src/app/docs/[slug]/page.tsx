@@ -84,7 +84,7 @@ server {
 
 ## Use Our Generator
 
-Instead of writing these configs by hand, use our [Nginx Config Generator](/) to build your reverse proxy configuration visually!
+Instead of writing these configs by hand, use [Configen](/) to build your reverse proxy configuration visually!
 `,
     },
     'ssl-setup': {
@@ -273,7 +273,7 @@ server {
 }
 \`\`\`
 
-Use our [Nginx Config Generator](/) to add all security headers with one click!
+Use [Configen](/) to add all security headers with one click!
 `,
     },
 };
@@ -311,10 +311,10 @@ export default async function DocPage({ params }: { params: Params }) {
     return (
         <article className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-12">
             <Link
-                href="/"
+                href="/docs"
                 className="inline-flex items-center gap-1.5 text-sm text-dark-500 hover:text-accent-400 transition-colors mb-8"
             >
-                <ArrowLeft className="w-4 h-4" /> Back to Generator
+                <ArrowLeft className="w-4 h-4" /> Back to Docs
             </Link>
 
             <header className="mb-8">
@@ -339,15 +339,43 @@ export default async function DocPage({ params }: { params: Params }) {
                 dangerouslySetInnerHTML={{ __html: simpleMarkdown(doc.content) }}
             />
 
-            <div className="mt-12 p-6 rounded-xl border border-dark-700 bg-surface-raised text-center">
+            {/* Related Guides */}
+            <div className="mt-12">
+                <h3 className="text-sm font-semibold text-dark-400 uppercase tracking-wider mb-4">Other Guides</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {Object.entries(docs)
+                        .filter(([s]) => s !== slug)
+                        .map(([s, d]) => (
+                            <Link
+                                key={s}
+                                href={`/docs/${s}`}
+                                className="p-4 rounded-xl border border-dark-700 bg-dark-900/50 hover:bg-dark-800 hover:border-dark-600 transition-all group"
+                            >
+                                <span className="text-sm font-medium text-dark-300 group-hover:text-white transition-colors">{d.title}</span>
+                                <p className="text-xs text-dark-500 mt-1 line-clamp-1">{d.description}</p>
+                            </Link>
+                        ))}
+                </div>
+            </div>
+
+            {/* CTA */}
+            <div className="mt-8 p-6 rounded-xl border border-dark-700 bg-surface-raised text-center">
                 <h3 className="text-lg font-bold text-dark-300 mb-2">Ready to build your config?</h3>
-                <p className="text-sm text-dark-400 mb-4">Use our visual generator — no coding required.</p>
-                <Link
-                    href="/#generator"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-500 text-white font-semibold text-sm hover:bg-accent-600 transition-all"
-                >
-                    Open Generator <ExternalLink className="w-4 h-4" />
-                </Link>
+                <p className="text-sm text-dark-400 mb-4">Use Configen to generate or audit your server configuration — no coding required.</p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                    <Link
+                        href="/#generator"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-accent-500 text-white font-semibold text-sm hover:bg-accent-600 transition-all"
+                    >
+                        Open Generator <ExternalLink className="w-4 h-4" />
+                    </Link>
+                    <Link
+                        href="/lint"
+                        className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-dark-600 text-dark-300 font-semibold text-sm hover:bg-dark-800 transition-all"
+                    >
+                        Try the Linter →
+                    </Link>
+                </div>
             </div>
         </article>
     );

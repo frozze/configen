@@ -1,7 +1,15 @@
 import type { MetadataRoute } from 'next';
+import { getAllLintDocSlugs } from '@/app/docs/lint/[ruleId]/page';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://nginxconfig.io';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://configen.dev';
+
+    const lintDocPages = getAllLintDocSlugs().map((slug) => ({
+        url: `${baseUrl}/docs/lint/${slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: 0.7,
+    }));
 
     return [
         {
@@ -9,6 +17,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
             lastModified: new Date(),
             changeFrequency: 'weekly',
             priority: 1,
+        },
+        {
+            url: `${baseUrl}/lint`,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 0.9,
         },
         {
             url: `${baseUrl}/docs/reverse-proxy`,
@@ -40,5 +54,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
             changeFrequency: 'monthly',
             priority: 0.5,
         },
+        ...lintDocPages,
     ];
 }
