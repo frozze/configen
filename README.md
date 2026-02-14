@@ -114,20 +114,6 @@ nginx-config-generator/
 
 We welcome contributions! Whether it's a bug fix, new preset, improved config generation, or documentation — every PR helps. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-## Roadmap
-
-- [x] Core config generator (8 sections)
-- [x] 5 presets
-- [x] Dark/Light theme
-- [x] Docker support
-- [ ] AI-powered config generation (Pro)
-- [ ] Save & share configs (Pro)
-- [ ] Nginx config linter / validator
-- [ ] Import existing nginx.conf and edit visually
-- [ ] More presets (Django, Laravel, Next.js, Caddy migration)
-- [ ] Config diff tool
-- [ ] Community preset library
-
 ## License
 
 This project is licensed under the AGPL-3.0 License — see the [LICENSE](LICENSE) file for details.
