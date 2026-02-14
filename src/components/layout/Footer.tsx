@@ -7,7 +7,7 @@ export default function Footer() {
         <footer className="border-t border-dark-700/50 bg-dark-950 mt-24">
             <AdSlot position="footer" />
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
                     {/* Brand */}
                     <div className="space-y-3">
                         <Link href="/" className="flex items-center gap-2.5">
@@ -23,24 +23,32 @@ export default function Footer() {
                         </p>
                     </div>
 
-                    {/* Links */}
+                    {/* Links — Tools */}
                     <div>
-                        <h3 className="text-sm font-semibold text-dark-400 mb-3">Documentation</h3>
+                        <h3 className="text-sm font-semibold text-dark-400 mb-3">Tools</h3>
                         <ul className="space-y-2">
-                            <li><Link href="/docs/reverse-proxy" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">Reverse Proxy Guide</Link></li>
-                            <li><Link href="/docs/ssl-setup" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">SSL/TLS Setup</Link></li>
-                            <li><Link href="/docs/load-balancing" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">Load Balancing</Link></li>
-                            <li><Link href="/docs/security-headers" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">Security Headers</Link></li>
+                            <li><Link href="/#generator" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">Generator</Link></li>
+                            <li><Link href="/lint" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">Linter</Link></li>
                         </ul>
                     </div>
 
-                    {/* More */}
+                    {/* Links — Resources */}
                     <div>
-                        <h3 className="text-sm font-semibold text-dark-400 mb-3">Project</h3>
+                        <h3 className="text-sm font-semibold text-dark-400 mb-3">Resources</h3>
                         <ul className="space-y-2">
-                            <li><Link href="/about" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">About</Link></li>
+                            <li><Link href="/docs" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">Documentation</Link></li>
+                            <li><Link href="/docs/reverse-proxy" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">Reverse Proxy Guide</Link></li>
+                            <li><Link href="/docs/ssl-setup" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">SSL/TLS Setup</Link></li>
+                        </ul>
+                    </div>
+
+                    {/* Links — Open Source */}
+                    <div>
+                        <h3 className="text-sm font-semibold text-dark-400 mb-3">Open Source</h3>
+                        <ul className="space-y-2">
                             <li><Link href="https://github.com/frozze/configen" target="_blank" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">GitHub</Link></li>
-                            <li><Link href="/roadmap" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">Roadmap</Link></li>
+                            <li><Link href="https://github.com/frozze/configen/blob/main/CONTRIBUTING.md" target="_blank" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">Contributing</Link></li>
+                            <li><Link href="https://github.com/frozze/configen/blob/main/LICENSE" target="_blank" className="text-sm text-dark-500 hover:text-accent-400 transition-colors">License (AGPL-3.0)</Link></li>
                         </ul>
                     </div>
                 </div>

@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     default: 'Configen — Visual Server Config Generator',
     template: '%s | Configen',
   },
-  description: 'Free, open-source visual config generator for Nginx, Caddy, and Docker Compose. Generate, import, lint, and edit production-ready configs in your browser.',
+  description: 'Free, open-source visual Nginx config generator & linter. Generate, import, and audit production-ready Nginx configurations in your browser.',
   openGraph: {
     title: 'Configen — Visual Server Config Generator',
     description: 'Generate, import, lint, and edit production-ready server configurations visually. 100% client-side.',

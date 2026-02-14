@@ -109,22 +109,6 @@ export default function HomePage() {
 
               <HeroImportButton />
             </div>
-
-            {/* Platform Badges */}
-            <div className="mt-12 flex flex-wrap justify-center gap-4">
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-raised border border-dark-700">
-                <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span className="text-sm font-medium text-dark-300">Nginx</span>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-raised border border-dark-700 opacity-60 tooltip" title="Coming Soon">
-                <div className="w-2 h-2 rounded-full bg-dark-600" />
-                <span className="text-sm font-medium text-dark-400">Caddy (Soon)</span>
-              </div>
-              <div className="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-raised border border-dark-700 opacity-60 tooltip" title="Coming Soon">
-                <div className="w-2 h-2 rounded-full bg-dark-600" />
-                <span className="text-sm font-medium text-dark-400">Docker (Soon)</span>
-              </div>
-            </div>
           </div>
 
           {/* Feature cards */}
@@ -182,21 +166,6 @@ export default function HomePage() {
           {faqs.map((faq, i) => (
             <FAQItem key={i} {...faq} />
           ))}
-        </div>
-      </section>
-
-      {/* ─── Related Tools ────────────────────────────────── */}
-      <section className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 pb-16">
-        <h2 className="text-lg font-bold text-dark-300 text-center mb-6">More Developer Tools</h2>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="p-4 rounded-xl border border-dark-700 bg-surface-raised/50 text-center opacity-50">
-            <p className="text-sm text-dark-400">Apache Config Generator</p>
-            <p className="text-xs text-dark-500 mt-1">Coming Soon</p>
-          </div>
-          <div className="p-4 rounded-xl border border-dark-700 bg-surface-raised/50 text-center opacity-50">
-            <p className="text-sm text-dark-400">Docker Compose Builder</p>
-            <p className="text-xs text-dark-500 mt-1">Coming Soon</p>
-          </div>
         </div>
       </section>
     </>

@@ -42,23 +42,6 @@ export default function PresetSelector() {
                     </button>
                 ))}
             </div>
-
-            {/* AI Assist placeholder */}
-            <div className="relative">
-                <button
-                    disabled
-                    className="w-full p-3 rounded-xl border border-dark-700 bg-surface-raised opacity-60 cursor-not-allowed text-left"
-                    title="Coming Soon"
-                >
-                    <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-dark-400">🤖 AI Assist</span>
-                        <span className="text-[10px] font-bold uppercase tracking-wider bg-dark-700 text-dark-400 px-2 py-0.5 rounded-full">
-                            Coming Soon
-                        </span>
-                    </div>
-                    <div className="text-xs text-dark-500 mt-0.5">Describe your setup in plain English</div>
-                </button>
-            </div>
         </div>
     );
 }
