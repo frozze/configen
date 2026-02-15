@@ -75,13 +75,6 @@ export const rules: LintRule[] = [
         category: 'security',
         severity: 'error',
         test: (c) => !c.ssl.enabled && c.listenPort === 80,
-        fix: () => ({
-            ssl: {
-                enabled: true,
-                certificatePath: '/etc/ssl/certs/example.crt',
-                keyPath: '/etc/ssl/private/example.key'
-            }
-        } as DeepPartial<NginxConfig>),
         docsUrl: '/docs/lint/security-ssl-missing',
     },
     // ...
