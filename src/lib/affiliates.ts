@@ -30,14 +30,14 @@ export const affiliateProviders: AffiliateProvider[] = [
         credit: '$300 free credit',
         color: '#007BFC',
     },
-    {
-        name: 'Hetzner',
-        slug: 'hetzner',
-        url: 'https://hetzner.cloud/?ref=YOUR_CODE',
-        tagline: 'European cloud hosting',
-        credit: '€20 free credit',
-        color: '#D50C2D',
-    },
+    // {
+    //     name: 'Hetzner',
+    //     slug: 'hetzner',
+    //     url: 'https://hetzner.cloud/?ref=YOUR_CODE',
+    //     tagline: 'European cloud hosting',
+    //     credit: '€20 free credit',
+    //     color: '#D50C2D',
+    // },
 ];
 
 export function trackAffiliateClick(provider: string) {
