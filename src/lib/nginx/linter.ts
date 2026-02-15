@@ -118,7 +118,7 @@ export const rules: LintRule[] = [
         message: 'Worker connections is set low (< 1024). Default is usually 1024 or higher for production.',
         category: 'best-practice',
         severity: 'warning',
-        test: (c) => c.performance.workerConnections < 1024,
+        test: (c) => false, // c.performance.workerConnections < 1024, // Disabled: meaningless for server-block only configs
         fix: () => ({ performance: { workerConnections: 1024 } } as DeepPartial<NginxConfig>),
         docsUrl: '/docs/lint/bp-worker-connections-low',
     },
