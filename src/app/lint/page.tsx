@@ -168,12 +168,14 @@ export default function LinterPage() {
                                                 </div>
                                                 <p className="text-sm opacity-90 mb-3">{result.message}</p>
                                                 {result.docsUrl && (
-                                                    <Link
+                                                    <a
                                                         href={result.docsUrl}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
                                                         className="text-xs hover:underline inline-flex items-center gap-1 opacity-75 hover:opacity-100"
                                                     >
                                                         Learn more <ArrowRight className="w-3 h-3" />
-                                                    </Link>
+                                                    </a>
                                                 )}
                                             </div>
                                             {availableRules.find(r => r.id === result.ruleId)?.fix && (
@@ -199,14 +201,28 @@ export default function LinterPage() {
 
 // Simple Deep Merge Utility
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+// Simple Deep Merge Utility (Immutable)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function deepMerge(target: any, source: any): any {
-    for (const key of Object.keys(source)) {
-        if (source[key] instanceof Object && key in target) {
-            Object.assign(source[key], deepMerge(target[key], source[key]));
-        }
+    const output = { ...target };
+    if (isObject(target) && isObject(source)) {
+        Object.keys(source).forEach(key => {
+            if (isObject(source[key])) {
+                if (!(key in target)) {
+                    Object.assign(output, { [key]: source[key] });
+                } else {
+                    output[key] = deepMerge(target[key], source[key]);
+                }
+            } else {
+                Object.assign(output, { [key]: source[key] });
+            }
+        });
     }
-    Object.assign(target || {}, source);
-    return target;
+    return output;
+}
+
+function isObject(item: unknown) {
+    return (item && typeof item === 'object' && !Array.isArray(item));
 }
 
 function getScoreColor(score: number) {
