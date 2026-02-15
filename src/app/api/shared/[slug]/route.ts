@@ -19,7 +19,9 @@ export async function GET(
             return NextResponse.json({ error: 'Not found or private' }, { status: 404 });
         }
 
-        return NextResponse.json(config);
+        // Only expose safe fields — never leak userId
+        const { userId: _userId, ...safeConfig } = config;
+        return NextResponse.json(safeConfig);
     } catch {
         return NextResponse.json(
             { error: 'Failed to fetch shared config' },

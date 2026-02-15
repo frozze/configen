@@ -27,5 +27,5 @@ export const auth = betterAuth({
         enabled: true,
         requireEmailVerification: false
     },
-    secret: process.env.BETTER_AUTH_SECRET || "CHANGE_ME_IN_PROD",
+    secret: process.env.BETTER_AUTH_SECRET!,
 });

@@ -49,7 +49,7 @@ export async function PUT(
 
     try {
         const body = await request.json();
-        // validation...
+        const { name, description, configJson, nginxConf, isPublic } = body;
 
         const [existing] = await db
             .select()
@@ -63,10 +63,14 @@ export async function PUT(
         await db
             .update(savedConfigs)
             .set({
-                ...body,
+                ...(name !== undefined && { name }),
+                ...(description !== undefined && { description }),
+                ...(configJson !== undefined && { configJson }),
+                ...(nginxConf !== undefined && { nginxConf }),
+                ...(isPublic !== undefined && { isPublic }),
                 updatedAt: new Date(),
             })
-            .where(eq(savedConfigs.id, id));
+            .where(and(eq(savedConfigs.id, id), eq(savedConfigs.userId, session.user.id)));
 
         return NextResponse.json({ success: true });
     } catch {
