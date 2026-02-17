@@ -51,17 +51,20 @@ const faqs = [
 
 function FAQItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
+  const answerId = `faq-${q.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
   return (
     <div className="border-b border-dark-700 last:border-0">
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
+        aria-controls={answerId}
         className="w-full flex items-center justify-between py-4 text-left"
       >
         <span className="text-sm font-medium text-dark-300">{q}</span>
         <ArrowDown className={`w-4 h-4 text-dark-500 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
-        <div className="pb-4 text-sm text-dark-400 animate-fade-in-up">
+        <div id={answerId} className="pb-4 text-sm text-dark-400 animate-fade-in-up">
           {a}
         </div>
       )}

@@ -9,6 +9,8 @@ interface CodeEditorProps {
     language?: string;
     placeholder?: string;
     className?: string;
+    ariaLabel?: string;
+    readOnly?: boolean;
 }
 
 export const CodeEditor: React.FC<CodeEditorProps> = ({
@@ -16,7 +18,9 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
     onChange,
     language = 'nginx',
     placeholder,
-    className = ''
+    className = '',
+    ariaLabel,
+    readOnly = false,
 }) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const preRef = useRef<HTMLPreElement>(null);
@@ -68,6 +72,12 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
                 </code>
             </pre>
 
+            {!value && placeholder && (
+                <div className="absolute inset-0 p-4 text-dark-500 pointer-events-none z-5">
+                    {placeholder}
+                </div>
+            )}
+
             {/* Input Layer */}
             <textarea
                 ref={textareaRef}
@@ -75,6 +85,8 @@ export const CodeEditor: React.FC<CodeEditorProps> = ({
                 onChange={(e) => onChange(e.target.value)}
                 onScroll={handleScroll}
                 onKeyDown={handleKeyDown}
+                readOnly={readOnly}
+                aria-label={ariaLabel || 'Code editor'}
                 placeholder={placeholder}
                 spellCheck={false}
                 className="absolute inset-0 w-full h-full p-4 bg-transparent text-transparent caret-white resize-none outline-none z-10 overflow-auto whitespace-pre-wrap break-words custom-scrollbar"

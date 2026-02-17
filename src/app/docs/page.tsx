@@ -4,7 +4,7 @@ import { BookOpen, Shield, Zap, CheckCircle, ArrowRight } from 'lucide-react';
 
 export const metadata: Metadata = {
     title: 'Nginx Documentation & Guides — Configen',
-    description: 'In-depth guides on Nginx configuration: reverse proxies, SSL/TLS, load balancing, security headers, and 20+ lint rules explained.',
+    description: 'In-depth guides on Nginx configuration: reverse proxies, SSL/TLS, load balancing, security headers, and 22 lint rules explained.',
 };
 
 const guides = [
@@ -35,9 +35,10 @@ const guides = [
 ];
 
 const lintCategories = [
-    { category: 'Security', icon: <Shield className="w-4 h-4" />, color: 'text-red-400', count: 8 },
-    { category: 'Performance', icon: <Zap className="w-4 h-4" />, color: 'text-amber-400', count: 7 },
-    { category: 'Best Practice', icon: <CheckCircle className="w-4 h-4" />, color: 'text-blue-400', count: 5 },
+    { category: 'Security', icon: <Shield className="w-4 h-4" />, color: 'text-red-400', count: 9 },
+    { category: 'Performance', icon: <Zap className="w-4 h-4" />, color: 'text-amber-400', count: 6 },
+    { category: 'Correctness', icon: <CheckCircle className="w-4 h-4" />, color: 'text-violet-400', count: 1 },
+    { category: 'Best Practice', icon: <CheckCircle className="w-4 h-4" />, color: 'text-blue-400', count: 6 },
 ];
 
 export default function DocsIndexPage() {
@@ -80,10 +81,10 @@ export default function DocsIndexPage() {
             <section className="mb-12">
                 <h2 className="text-lg font-semibold text-dark-300 mb-2">Lint Rules Reference</h2>
                 <p className="text-sm text-dark-400 mb-4">
-                    20 rules across security, performance, and best practices. Each rule page explains what it checks, why it matters, and how to fix it.
+                    22 rules across security, performance, correctness, and best practices. Each rule page explains what it checks, why it matters, and how to fix it.
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-4">
                     {lintCategories.map((cat) => (
                         <div key={cat.category} className="p-4 rounded-xl border border-dark-700 bg-dark-900/50">
                             <div className="flex items-center gap-2 mb-1">

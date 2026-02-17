@@ -91,6 +91,7 @@ export const rules: LintRule[] = [
         category: 'security',
         severity: 'error',
         test: (c) => c.ssl.enabled && (!c.ssl.certificatePath.trim() || !c.ssl.keyPath.trim()),
+        docsUrl: '/docs/lint/security-ssl-enabled-missing-certs',
     },
     // ...
     {
@@ -120,6 +121,7 @@ export const rules: LintRule[] = [
         severity: 'error',
         test: (c) => c.reverseProxy.enabled && !c.reverseProxy.backendAddress.trim(),
         fix: () => ({ reverseProxy: { enabled: false } } as DeepPartial<NginxConfig>),
+        docsUrl: '/docs/lint/correctness-proxy-enabled-without-backend',
     },
 
     // ─── Performance ──────────────────────────────────────────────────────────

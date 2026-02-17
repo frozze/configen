@@ -34,8 +34,10 @@
 - 🛡️ **Security headers** & rate limiting
 - 📦 **Gzip / Brotli compression**
 - 🔍 **Built-in Linter** — 20+ rules to audit your config (security, performance, best practices)
+- 🛠️ **Smart Auto-Fix** — one-click fixes with idempotent rule application
 - 📥 **Import existing configs** — paste or upload your `nginx.conf` and edit visually
 - 📋 **Copy or download** your config with one click
+- 🎨 **Syntax-highlighted lint editor** — easier config review and edits
 - 🌗 **Dark / Light theme**
 - 📱 **Fully responsive**
 
@@ -74,10 +76,11 @@ docker compose up -d
 
 ## 🔍 Linter
 
-Configen includes a built-in config linter with **20+ rules** covering:
+Configen includes a built-in config linter with **22 rules** covering:
 
 - 🛡️ **Security** — missing SSL, outdated TLS protocols, open autoindex, rate limiting
 - ⚡ **Performance** — Brotli, static caching, `client_max_body_size`
+- ✅ **Correctness** — invalid reverse proxy states and config contradictions
 - ✅ **Best Practices** — redirect loops, single-server upstreams, error pages
 
 Each rule has a dedicated [documentation page](https://configen.dev/docs/lint/security-server-tokens) with explanations and fix suggestions.

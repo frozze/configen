@@ -1,5 +1,5 @@
 'use client';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo, useRef } from 'react';
 import { useConfigStore } from '@/stores/configStore';
 import { lintConfig, availableRules, applyLintFix, applyAllLintFixes, type LintReport, type LintResult } from '@/lib/nginx/linter';
 import { parseNginxConfig } from '@/lib/nginx/parser';
@@ -14,6 +14,8 @@ export default function LinterPage() {
     const [report, setReport] = useState<LintReport | null>(null);
     const [parsedConfig, setParsedConfig] = useState<NginxConfig | null>(null);
     const [parseError, setParseError] = useState<string | null>(null);
+    const [isApplyingFixes, setIsApplyingFixes] = useState(false);
+    const lintDebounceRef = useRef<NodeJS.Timeout | null>(null);
 
     const runLinting = useCallback((configStr: string) => {
         if (!configStr.trim()) {
@@ -45,7 +47,14 @@ export default function LinterPage() {
 
     const handleInputChange = (value: string) => {
         setInputConfig(value);
-        runLinting(value);
+
+        if (lintDebounceRef.current) {
+            clearTimeout(lintDebounceRef.current);
+        }
+
+        lintDebounceRef.current = setTimeout(() => {
+            runLinting(value);
+        }, 180);
     };
 
     // Initial load or when user wants to load from generator
@@ -61,6 +70,7 @@ export default function LinterPage() {
         if (!rule?.fix) return;
 
         try {
+            setIsApplyingFixes(true);
             const fixResult = applyLintFix(parsedConfig, result.ruleId);
             if (!fixResult.applied) return;
 
@@ -70,6 +80,8 @@ export default function LinterPage() {
             runLinting(generated.config);
         } catch (err) {
             console.error('Failed to apply fix:', err);
+        } finally {
+            setIsApplyingFixes(false);
         }
     };
 
@@ -83,6 +95,7 @@ export default function LinterPage() {
         if (fixableResults.length === 0) return;
 
         try {
+            setIsApplyingFixes(true);
             const fixResult = applyAllLintFixes(parsedConfig);
             if (!fixResult.applied) return;
 
@@ -92,8 +105,19 @@ export default function LinterPage() {
             runLinting(generated.config);
         } catch (err) {
             console.error('Failed to apply all fixes:', err);
+        } finally {
+            setIsApplyingFixes(false);
         }
     };
+
+    const issueSummary = useMemo(() => {
+        if (!report) return null;
+        return {
+            errors: report.results.filter((r) => r.severity === 'error').length,
+            warnings: report.results.filter((r) => r.severity === 'warning').length,
+            infos: report.results.filter((r) => r.severity === 'info').length,
+        };
+    }, [report]);
 
     return (
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
@@ -153,6 +177,13 @@ export default function LinterPage() {
                                 <div>
                                     <h3 className="text-lg font-medium text-dark-300">Config Health</h3>
                                     <p className="text-sm text-dark-500">Based on {report.results.length + (report.valid ? 5 : 0)} checks</p>
+                                    {issueSummary && (
+                                        <div className="mt-2 flex items-center gap-2 text-xs">
+                                            <span className="px-2 py-0.5 rounded-full bg-err-500/15 text-err-400">Errors: {issueSummary.errors}</span>
+                                            <span className="px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-400">Warnings: {issueSummary.warnings}</span>
+                                            <span className="px-2 py-0.5 rounded-full bg-blue-500/15 text-blue-400">Info: {issueSummary.infos}</span>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="flex items-center gap-4">
                                     <div className="text-right">
@@ -172,9 +203,10 @@ export default function LinterPage() {
                                     {report.results.some((result) => availableRules.find((r) => r.id === result.ruleId)?.fix) && (
                                         <button
                                             onClick={applyAllFixes}
+                                            disabled={isApplyingFixes}
                                             className="px-3 py-1.5 rounded-lg bg-accent-500/10 text-accent-400 hover:bg-accent-500/20 text-xs font-medium transition-colors"
                                         >
-                                            Fix all available
+                                            {isApplyingFixes ? 'Applying...' : 'Fix all available'}
                                         </button>
                                     )}
                                 </div>
@@ -212,10 +244,11 @@ export default function LinterPage() {
                                             {availableRules.find(r => r.id === result.ruleId)?.fix && (
                                                 <button
                                                     onClick={() => applyFix(result)}
-                                                    className="px-3 py-1.5 rounded-lg bg-surface-raised border border-dark-600 hover:bg-dark-700 text-xs font-medium transition-colors flex items-center gap-1.5 self-start group"
+                                                    disabled={isApplyingFixes}
+                                                    className="px-3 py-1.5 rounded-lg bg-surface-raised border border-dark-600 hover:bg-dark-700 disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium transition-colors flex items-center gap-1.5 self-start group"
                                                 >
                                                     <Wrench className="w-3 h-3 group-hover:rotate-12 transition-transform" />
-                                                    Fix
+                                                    {isApplyingFixes ? 'Applying...' : 'Fix'}
                                                 </button>
                                             )}
                                         </div>

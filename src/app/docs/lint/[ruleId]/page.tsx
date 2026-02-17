@@ -89,6 +89,28 @@ server {
         howToFix: 'Enable SSL in Configen\'s SSL/TLS section and provide your certificate paths. Use Let\'s Encrypt for free certificates with `certbot`.',
         relatedRules: ['security-ssl-protocols-outdated', 'security-basic-auth-no-ssl'],
     },
+    'security-ssl-enabled-missing-certs': {
+        title: 'SSL Enabled Without Certificate Paths',
+        description: 'Why enabling SSL without certificate/key paths breaks your Nginx startup.',
+        severity: 'error',
+        category: 'security',
+        what: 'This rule checks if SSL/TLS is enabled while `ssl_certificate` or `ssl_certificate_key` is empty or missing.',
+        why: 'Nginx cannot start an SSL server block without valid certificate paths. This causes deployment failures and immediate downtime after config reload.',
+        bad: `server {
+    listen 443 ssl;
+    server_name example.com;
+    # Missing cert/key paths
+}`,
+        good: `server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+}`,
+        howToFix: 'Set both certificate and key paths in Configen\'s SSL section before enabling SSL mode.',
+        relatedRules: ['security-ssl-missing', 'security-ssl-protocols-outdated'],
+    },
     'security-upstream-needs-ssl': {
         title: 'Upstream Traffic Unencrypted',
         description: 'When to encrypt traffic between Nginx and your backend servers.',
@@ -353,6 +375,24 @@ server {
 }`,
         howToFix: 'Add at least one location block with a root path, or enable reverse proxy in Configen\'s configuration.',
         relatedRules: ['bp-http-redirect-without-ssl'],
+    },
+    'correctness-proxy-enabled-without-backend': {
+        title: 'Reverse Proxy Enabled Without Backend',
+        description: 'Why enabling reverse proxy without backend address creates a broken config.',
+        severity: 'error',
+        category: 'correctness',
+        what: 'This rule checks if reverse proxy mode is enabled while backend address is empty.',
+        why: 'A proxy location without a backend target cannot route requests. In production this leads to immediate `502/500`-class failures for incoming traffic.',
+        bad: `location / {
+    proxy_pass ;
+}`,
+        good: `location / {
+    proxy_pass http://127.0.0.1:3000;
+    proxy_http_version 1.1;
+    proxy_set_header Host $host;
+}`,
+        howToFix: 'Provide a valid backend URL in Reverse Proxy settings, or disable reverse proxy if you serve static files directly.',
+        relatedRules: ['bp-missing-root-or-proxy', 'security-upstream-needs-ssl'],
     },
     'bp-http-redirect-without-ssl': {
         title: 'HTTP Redirect Without SSL',
