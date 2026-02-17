@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { lintConfig, type LintSeverity } from '../src/lib/nginx/linter';
+import { lintConfig, applyLintFix, applyAllLintFixes, type LintSeverity } from '../src/lib/nginx/linter';
 import type { NginxConfig } from '../src/lib/nginx/types';
 
 type DeepPartial<T> = {
@@ -142,5 +142,32 @@ describe('lintConfig', () => {
         for (let i = 1; i < report.results.length; i += 1) {
             expect(rank[report.results[i - 1].severity]).toBeLessThanOrEqual(rank[report.results[i].severity]);
         }
+    });
+
+    it('applies single rule fix only when violated', () => {
+        const broken = makeConfig({ security: { hideVersion: false } });
+        const fixed = applyLintFix(broken, 'security-server-tokens');
+
+        expect(fixed.applied).toBe(true);
+        expect(fixed.config.security.hideVersion).toBe(true);
+
+        const noOp = applyLintFix(fixed.config, 'security-server-tokens');
+        expect(noOp.applied).toBe(false);
+    });
+
+    it('applies all fixes idempotently', () => {
+        const broken = makeConfig({
+            security: { hideVersion: false, securityHeaders: false, rateLimiting: false },
+            performance: { gzip: false, staticCaching: false, keepaliveTimeout: 90 },
+            logging: { accessLog: false },
+        });
+
+        const firstPass = applyAllLintFixes(broken);
+        expect(firstPass.applied).toBe(true);
+        expect(firstPass.appliedRuleIds.length).toBeGreaterThan(0);
+
+        const secondPass = applyAllLintFixes(firstPass.config);
+        expect(secondPass.applied).toBe(false);
+        expect(secondPass.appliedRuleIds).toHaveLength(0);
     });
 });

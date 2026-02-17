@@ -40,6 +40,12 @@ export interface LintReport {
     };
 }
 
+export interface ApplyFixResult {
+    config: NginxConfig;
+    applied: boolean;
+    appliedRuleIds: string[];
+}
+
 // Utility type for nested partials
 type DeepPartial<T> = T extends readonly (infer U)[]
     ? readonly DeepPartial<U>[]
@@ -327,6 +333,97 @@ export function lintConfig(config: NginxConfig): LintReport {
         results,
         counts,
     };
+}
+
+export function applyLintFix(config: NginxConfig, ruleId: string): ApplyFixResult {
+    const rule = rules.find((item) => item.id === ruleId);
+
+    if (!rule?.fix || !rule.test(config)) {
+        return {
+            config,
+            applied: false,
+            appliedRuleIds: [],
+        };
+    }
+
+    const updates = rule.fix(config);
+    const nextConfig = deepMergeConfig(config, updates);
+    const changed = !isSameConfig(config, nextConfig);
+
+    return {
+        config: changed ? nextConfig : config,
+        applied: changed,
+        appliedRuleIds: changed ? [rule.id] : [],
+    };
+}
+
+export function applyAllLintFixes(config: NginxConfig, maxPasses = 3): ApplyFixResult {
+    let currentConfig = config;
+    const appliedRuleIds: string[] = [];
+    const seenSignatures = new Set<string>([configSignature(config)]);
+
+    for (let pass = 0; pass < maxPasses; pass += 1) {
+        let changedInPass = false;
+
+        for (const rule of rules) {
+            if (!rule.fix || !rule.test(currentConfig)) continue;
+
+            const updates = rule.fix(currentConfig);
+            const nextConfig = deepMergeConfig(currentConfig, updates);
+
+            if (!isSameConfig(currentConfig, nextConfig)) {
+                currentConfig = nextConfig;
+                appliedRuleIds.push(rule.id);
+                changedInPass = true;
+            }
+        }
+
+        const signature = configSignature(currentConfig);
+        if (seenSignatures.has(signature)) break;
+        seenSignatures.add(signature);
+
+        if (!changedInPass) break;
+    }
+
+    return {
+        config: currentConfig,
+        applied: !isSameConfig(config, currentConfig),
+        appliedRuleIds,
+    };
+}
+
+function deepMergeConfig(target: NginxConfig, source: DeepPartial<NginxConfig>): NginxConfig {
+    const output = { ...target } as Record<string, unknown>;
+
+    if (isObject(target) && isObject(source)) {
+        (Object.keys(source) as Array<keyof NginxConfig>).forEach((key) => {
+            const sourceValue = source[key];
+            const targetValue = target[key];
+
+            if (isObject(sourceValue) && isObject(targetValue) && !Array.isArray(sourceValue) && !Array.isArray(targetValue)) {
+                output[key] = deepMergeConfig(
+                    targetValue as unknown as NginxConfig,
+                    sourceValue as unknown as DeepPartial<NginxConfig>
+                );
+            } else {
+                output[key] = sourceValue;
+            }
+        });
+    }
+
+    return output as unknown as NginxConfig;
+}
+
+function isObject(item: unknown): item is Record<string, unknown> {
+    return Boolean(item) && typeof item === 'object' && !Array.isArray(item);
+}
+
+function configSignature(config: NginxConfig): string {
+    return JSON.stringify(config);
+}
+
+function isSameConfig(left: NginxConfig, right: NginxConfig): boolean {
+    return configSignature(left) === configSignature(right);
 }
 
 export const availableRules = rules;
